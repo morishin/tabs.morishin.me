@@ -79,8 +79,13 @@ hakyllBuild = hakyllWith configuration $ do
         route idRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html" defaultContext
+            >>= relativizeUrls
 
     create ["robots.txt"] $ do
+        route idRoute
+        compile copyFileCompiler
+
+    create ["CNAME"] $ do
         route idRoute
         compile copyFileCompiler
 
@@ -96,5 +101,6 @@ hakyllBuild = hakyllWith configuration $ do
             getResourceBody -- Load "index.html" file into `Context (Item String)` type
                 >>= applyAsTemplate indexCtx -- Apply `indexCtx` to the template from "index.html"
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
+                >>= relativizeUrls
 
     match "templates/*" $ compile templateBodyCompiler
