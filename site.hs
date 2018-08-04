@@ -1,13 +1,61 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
-import           Hakyll
-
+import Data.Monoid (mappend)
+import Hakyll
+import System.Directory
+import Control.Monad (mapM_, forM_)
+import System.FilePath.Posix (dropExtension)
+import System.FilePath (takeFileName)
+import System.Process (system)
+import Data.List (isPrefixOf, isSuffixOf)
 
 --------------------------------------------------------------------------------
 main :: IO ()
-main = hakyll $ do
+main = do
+    generateHTMLFilesFromTabFiles
+    hakyllBuild
+
+generateHTMLFilesFromTabFiles :: IO ()
+generateHTMLFilesFromTabFiles = do
+    files <- listDirectory "./tabs"
+    forM_ files $ \file -> do
+        let filename = dropExtension file
+        writeFile ("posts/" ++ filename ++ ".html") filename
+
+configuration :: Configuration
+configuration = Configuration
+    { destinationDirectory = "docs" -- Use "docs" as distination directory name for GitHub Pages
+    , storeDirectory       = "_cache"
+    , tmpDirectory         = "_cache/tmp"
+    , providerDirectory    = "."
+    , ignoreFile           = ignoreFile'
+    , deployCommand        = "echo 'No deploy command specified' && exit 1"
+    , deploySite           = system . deployCommand
+    , inMemoryCache        = True
+    , previewHost          = "127.0.0.1"
+    , previewPort          = 8000
+    }
+    where
+    ignoreFile' path
+        | "."    `isPrefixOf` fileName = True
+        | "#"    `isPrefixOf` fileName = True
+        | "~"    `isSuffixOf` fileName = True
+        | ".swp" `isSuffixOf` fileName = True
+        | otherwise                    = False
+        where
+        fileName = takeFileName path
+
+hakyllBuild :: IO ()
+hakyllBuild = hakyllWith configuration $ do
     match "images/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "images/**/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "tabs/*" $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -15,53 +63,38 @@ main = hakyll $ do
         route   idRoute
         compile compressCssCompiler
 
-    match (fromList ["about.rst", "contact.markdown"]) $ do
-        route   $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
+    match "css/**/*" $ do
+        route   idRoute
+        compile compressCssCompiler
+
+    match "javascripts/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "javascripts/**/*" $ do
+        route   idRoute
+        compile copyFileCompiler
 
     match "posts/*" $ do
-        route $ setExtension "html"
+        route idRoute
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
-            >>= relativizeUrls
+            >>= loadAndApplyTemplate "templates/post.html" defaultContext
 
-    create ["archive.html"] $ do
+    create ["robots.txt"] $ do
+        route idRoute
+        compile copyFileCompiler
+
+    create ["index.html"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let archiveCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Archives"            `mappend`
-                    defaultContext
-
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-                >>= relativizeUrls
-
-
-    match "index.html" $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- loadAll "posts/*"
             let indexCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Home"                `mappend`
+                    listField "posts" defaultContext (return posts) `mappend`
+                    constField "title" "Home" `mappend`
                     defaultContext
 
-            getResourceBody
-                >>= applyAsTemplate indexCtx
+            getResourceBody -- Load "index.html" file into `Context (Item String)` type
+                >>= applyAsTemplate indexCtx -- Apply `indexCtx` to the template from "index.html"
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
-                >>= relativizeUrls
 
     match "templates/*" $ compile templateBodyCompiler
-
-
---------------------------------------------------------------------------------
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
-    defaultContext

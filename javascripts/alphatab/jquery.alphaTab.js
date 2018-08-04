@@ -1,0 +1,1 @@
+../../alphaTab/Build/JavaScript/jquery.alphaTab.js
