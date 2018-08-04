@@ -20,7 +20,7 @@ generateHTMLFilesFromTabFiles = do
     files <- listDirectory "./tabs"
     forM_ files $ \file -> do
         let filename = dropExtension file
-        writeFile ("posts/" ++ filename ++ ".html") filename
+        writeFile ("tabs/" ++ filename ++ ".html") filename
 
 configuration :: Configuration
 configuration = Configuration
@@ -55,7 +55,7 @@ hakyllBuild = hakyllWith configuration $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "tabs/*" $ do
+    match "tab_files/*" $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -75,7 +75,7 @@ hakyllBuild = hakyllWith configuration $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "posts/*" $ do
+    match "tabs/*" $ do
         route idRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html" defaultContext
@@ -92,7 +92,7 @@ hakyllBuild = hakyllWith configuration $ do
     create ["index.html"] $ do
         route idRoute
         compile $ do
-            posts <- loadAll "posts/*"
+            posts <- loadAll "tabs/*"
             let indexCtx =
                     listField "posts" defaultContext (return posts) `mappend`
                     constField "title" "Home" `mappend`
