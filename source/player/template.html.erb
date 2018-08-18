@@ -32,7 +32,7 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="#">
           <%= image_tag 'alphaTab.png', alt: 'alphaTab' %>
-          Player Demo
+          <%= title %> / <%= author %>
       </a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -94,7 +94,7 @@ data-player-offset specifies the additional offset to apply when scrolling.
                     in this sample we scroll 70px up for vertical layouts because the menubar would overlap the tablature otherwise.
                     the 10px are to have a small horizontal padding.
 -->
-<div id="alphaTab" data-file="/tabs/hoge/hoge.gp5" data-tracks="3"
+<div id="alphaTab" data-file="<%= file_path %>" data-tracks="3"
                     data-player="/javascripts/lib/alphaSynth/default.sf2"
                     data-player-offset="[-10,-70]"></div>
 

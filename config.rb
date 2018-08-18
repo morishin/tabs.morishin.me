@@ -19,13 +19,25 @@ page '/*.txt', layout: false
 # Proxy pages
 # https://middlemanapp.com/advanced/dynamic-pages/
 
-# proxy(
-#   '/this-page-has-no-template.html',
-#   '/template-file.html',
-#   locals: {
-#     which_fake_page: 'Rendering a fake page with a local variable'
-#   },
-# )
+Dir.foreach('source/tabs') do |directory|
+  next if ['.', '..'].include?(directory)
+  files = Dir.glob("source/tabs/#{directory}/*.gp5")
+  files.each do |file|
+    title = file.gsub(/^.*\/(.+)\.gp5$/, '\1')
+    author = directory
+    file_path = "/tabs/#{author}/#{title}.gp5"
+    proxy(
+      "/player/#{title}.html",
+      "/player/template.html",
+      locals: {
+        title: title,
+        author: author,
+        file_path: file_path,
+      },
+      ignore: true
+    )
+  end
+end
 
 # Helpers
 # Methods defined in the helpers block are available in templates
