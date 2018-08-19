@@ -39,7 +39,15 @@ Dir.foreach('source/tabs') do |directory|
   end
 end
 
-list_items = Dir.entries('source/tabs').select { |d| !['.', '..'].include?(d) }.map { |d| { author: d, titles: Dir.glob("source/tabs/#{d}/*.gp5").map { |f| f.gsub(/^.*\/(.+)\.gp5$/, '\1') } } }.select { | r| r[:titles].size >0 }
+list_items = Dir.entries('source/tabs').select { |d| !['.', '..'].include?(d) }.map { |d| { author: d, titles: Dir.glob("source/tabs/#{d}/*.gp5").map { |f| f.gsub(/^.*\/(.+)\.gp5$/, '\1') } } }.select { |r| r[:titles].size >0 }.sort { |l, r|
+  if l[:author] == 'Others'
+    1
+  elsif r[:author] == 'Others'
+    -1
+  else
+    l[:author] <=> r[:author]
+  end
+}
 
 proxy(
   "index.html",

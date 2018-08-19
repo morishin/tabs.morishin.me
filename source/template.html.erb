@@ -19,7 +19,7 @@
 </header>
 <div class="container">
 <% list_items.each do |list_item| %>
-  <h3><%= list_item[:author] %></h3>
+  <h4><%= list_item[:author] %></h4>
   <ul>
     <% list_item[:titles].each do |title| %>
       <li><%= link_to title, "/player/#{title}", target: '_blank' %></li>
