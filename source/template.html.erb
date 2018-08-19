@@ -1,3 +1,12 @@
+<% content_for :head do %>
+  <title>Guitar Tabs</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+  <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+  <%= stylesheet_link_tag "site" %>
+  <%= javascript_include_tag "site" %>
+<% end %>
+
 <header>
   <div class="logo">
     <a href='/'>Guitar Tabs</a>
@@ -13,7 +22,7 @@
   <h3><%= list_item[:author] %></h3>
   <ul>
     <% list_item[:titles].each do |title| %>
-      <li><%= link_to title, "/player/#{title}" %></li>
+      <li><%= link_to title, "/player/#{title}", target: '_blank' %></li>
     <% end %>
   </ul>
 <% end %>
