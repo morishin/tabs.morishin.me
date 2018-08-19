@@ -21,8 +21,8 @@ page '/*.txt', layout: false
 
 Dir.foreach('source/tabs') do |directory|
   next if ['.', '..'].include?(directory)
-  files = Dir.glob("source/tabs/#{directory}/*.gp5")
-  files.each do |file|
+  all_files = Dir.glob("source/tabs/#{directory}/*.gp5")
+  all_files.each do |file|
     title = file.gsub(/^.*\/(.+)\.gp5$/, '\1')
     author = directory
     file_path = "/tabs/#{author}/#{title}.gp5"
@@ -38,6 +38,17 @@ Dir.foreach('source/tabs') do |directory|
     )
   end
 end
+
+list_items = Dir.entries('source/tabs').select { |d| !['.', '..'].include?(d) }.map { |d| { author: d, titles: Dir.glob("source/tabs/#{d}/*.gp5").map { |f| f.gsub(/^.*\/(.+)\.gp5$/, '\1') } } }.select { | r| r[:titles].size >0 }
+
+proxy(
+  "index.html",
+  "template.html",
+  locals: {
+    list_items: list_items
+  },
+  ignore: true
+)
 
 # Helpers
 # Methods defined in the helpers block are available in templates
