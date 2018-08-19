@@ -49,7 +49,7 @@ list_items = Dir.entries('source/tabs')
       author: d,
       titles: Dir.glob("source/tabs/#{d}/*.gp5").map { |f|
         f.gsub(/^.*\/(.+)\.gp5$/, '\1')
-      }
+      }.sort { |l, r| l.downcase <=> r.downcase  }
     }
   }.reject { |r|
     r[:titles].empty?
