@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # Activate and configure extensions
 # https://middlemanapp.com/advanced/configuration/#configuring-extensions
 
 activate :autoprefixer do |prefix|
-  prefix.browsers = "last 2 versions"
+  prefix.browsers = 'last 2 versions'
 end
 
 # Layouts
@@ -28,30 +30,42 @@ Dir.foreach('source/tabs') do |directory|
     file_path = "/tabs/#{author}/#{title}.gp5"
     proxy(
       "/player/#{title}.html",
-      "/player/template.html",
+      '/player/template.html',
       locals: {
         title: title,
         author: author,
-        file_path: file_path,
+        file_path: file_path
       },
       ignore: true
     )
   end
 end
 
-list_items = Dir.entries('source/tabs').select { |d| !['.', '..'].include?(d) }.map { |d| { author: d, titles: Dir.glob("source/tabs/#{d}/*.gp5").map { |f| f.gsub(/^.*\/(.+)\.gp5$/, '\1') } } }.select { |r| r[:titles].size >0 }.sort { |l, r|
-  if l[:author] == 'Others'
-    1
-  elsif r[:author] == 'Others'
-    -1
-  else
-    l[:author] <=> r[:author]
-  end
-}
+list_items = Dir.entries('source/tabs')
+  .reject { |d|
+    ['.', '..'].include?(d)
+  }.map { |d|
+    {
+      author: d,
+      titles: Dir.glob("source/tabs/#{d}/*.gp5").map { |f|
+        f.gsub(/^.*\/(.+)\.gp5$/, '\1')
+      }
+    }
+  }.reject { |r|
+    r[:titles].empty?
+  }.sort { |l, r|
+    if l[:author] == 'Others'
+      1
+    elsif r[:author] == 'Others'
+      -1
+    else
+      l[:author] <=> r[:author]
+    end
+  }
 
 proxy(
-  "index.html",
-  "template.html",
+  'index.html',
+  'template.html',
   locals: {
     list_items: list_items
   },
