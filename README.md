@@ -16,21 +16,21 @@ bundle install
 1. Build pages
 
     ```sh
-bundle exec middleman build
-```
+    bundle exec middleman build
+    ```
 
 1. Run server
 
     ```sh
-cd build
-python -m SimpleHTTPServer
-```
+    cd build
+    python -m SimpleHTTPServer
+    ```
 
 1. Open in browser
 
     ```sh
-open http://localhost:8000
-```
+    open http://localhost:8000
+    ```
 
 ### Add a tab file
 Put a new tab file (`*.gp5`) in `tabs/` directory and rebuild.
