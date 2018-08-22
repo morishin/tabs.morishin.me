@@ -1,7 +1,7 @@
 # tabs.morishin.me
 My guitar transcriptions archive on the web 🎸📝
 
-Tab files 👉 https://github.com/morishin/TAB   
+Tab files 👉 https://github.com/morishin/TAB
 Tab viewer page uses 👉 https://github.com/CoderLine/alphaTab
 
 ## Develop
@@ -33,8 +33,18 @@ bundle install
     ```
 
 ### Add a tab file
-Put a new tab file (`*.gp5`) in `tabs/` directory and rebuild.
+1. Add a new tab file (`*.gp5`) to master branch of [morishin/TAB](https://github.com/morishin/TAB)
 
-```sh
-bundle exec middleman build
-```
+1. Update submodule
+
+    ```sh
+    cd tabs
+    git pull origin master
+    cd -
+    ```
+
+1. Rebuild pages
+
+    ```sh
+    bundle exec middleman build
+    ```
