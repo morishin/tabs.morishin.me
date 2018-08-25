@@ -1,7 +1,7 @@
 # tabs.morishin.me
 My guitar transcriptions archive on the web 🎸📝
 
-Tab files 👉 https://github.com/morishin/TAB  
+Tab files 👉 https://github.com/morishin/TAB<br />
 Tab viewer page uses 👉 https://github.com/CoderLine/alphaTab
 
 ## Develop
@@ -16,7 +16,7 @@ bundle install
 1. Build pages
 
     ```sh
-    bundle exec middleman build
+    yarn run gulp watch
     ```
 
 1. Run server
