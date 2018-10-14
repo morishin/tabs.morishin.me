@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" integrity="sha256-6b+gYy3DG/roKdQiHqp1FJYFQkaZdM6ohUpGyFyUAGk=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js" integrity="sha256-dd5QxcG/E8fb/H/iIQann2y2EDS0nEMVI56yYWFeeW4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 
     <%= stylesheet_link_tag 'demo' %>
     <style type="text/css">
@@ -75,9 +76,12 @@
 
 <nav class="navbar-default navbar-fixed-top">
     <div class="navbar">
-        <a class="navbar-brand" href="#">
+        <div class="logo">
+            <a href='/'>Guitar Tabs</a>
+        </div>
+        <div class="navbar-brand">
             <%= title %> / <%= author %>
-        </a>
+        </div>
         <div>
             <button id="playPause" disabled="disabled" class="btn btn-link navbar-btn glyphicon glyphicon-play"></button>
             <button id="stop" disabled="disabled" class="btn btn-link navbar-btn glyphicon glyphicon-stop"></button>
