@@ -16,14 +16,14 @@ bundle install
 1. Build pages
 
     ```sh
-    yarn run gulp watch
+    bundle exec middleman build
     ```
 
 1. Run server
 
     ```sh
     cd build
-    python -m SimpleHTTPServer
+    python -m http.server
     ```
 
 1. Open in browser
