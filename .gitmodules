@@ -1,6 +1,3 @@
-[submodule "alphaTab"]
-	path = alphaTab
-	url = git@github.com:morishin/alphaTab.git
 [submodule "tabs"]
 	path = tabs
 	url = git@github.com:morishin/TAB.git
