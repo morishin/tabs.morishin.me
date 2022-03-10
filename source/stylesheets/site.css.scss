@@ -7,10 +7,6 @@ body {
   color: #000;
 }
 
-header {
-  border-bottom: 0.2rem solid #000;
-}
-
 nav {
   text-align: right;
 }
@@ -49,91 +45,41 @@ article .header {
   text-decoration: none;
 }
 
-@media (max-width: 319px) {
-  body {
-    width: 90%;
-    margin: 0;
-    padding: 0 5%;
+.container {
+  width: 60rem;
+  max-width: 90vw;
+  @media (max-width: 480px) {
+    width: 90vw;
   }
-  header {
-    margin: 4.2rem 0;
-  }
-  nav {
-    margin: 0 auto 3rem;
-    text-align: center;
-  }
-  footer {
-    text-align: center;
-  }
-  .logo {
-    text-align: center;
-    margin: 1rem auto 3rem;
-  }
-  .logo a {
-    font-size: 2.4rem;
-  }
-  nav a {
-    display: block;
-    line-height: 1.6;
-  }
+  margin: 0 auto;
+  padding: 0;
 }
-
-@media (min-width: 320px) {
-  body {
-    width: 90%;
-    margin: 0;
-    padding: 0 5%;
+header {
+  margin: 3rem auto;
+  padding: 1.2rem 0;
+  width: 60rem;
+  max-width: 90vw;
+  @media (max-width: 480px) {
+    width: 90vw;
   }
-  header {
-    margin: 4.2rem 0;
-  }
-  nav {
-    margin: 0 auto 3rem;
-    text-align: center;
-  }
-  footer {
-    text-align: center;
-  }
-  .logo {
-    text-align: center;
-    margin: 1rem auto 3rem;
-  }
-  .logo a {
-    font-size: 2.4rem;
-  }
-  nav a {
-    display: inline;
-    margin: 0 0.6rem;
-  }
+  border-bottom: 0.2rem solid #000;
 }
-
-@media (min-width: 640px) {
-  body {
-    width: 60rem;
-    margin: 0 auto;
-    padding: 0;
-  }
-  header {
-    margin: 0 0 3rem;
-    padding: 1.2rem 0;
-  }
-  nav {
-    margin: 0;
-    text-align: right;
-  }
-  nav a {
-    margin: 0 0 0 1.2rem;
-    display: inline;
-  }
-  footer {
-    text-align: right;
-  }
-  .logo {
-    margin: 0;
-    text-align: left;
-  }
-  .logo a {
-    float: left;
-    font-size: 1.8rem;
-  }
+nav {
+  margin: 0;
+  text-align: right;
+}
+nav a {
+  margin: 0 0 0 1.2rem;
+  display: inline;
+}
+footer {
+  text-align: right;
+}
+.logo {
+  margin: 0;
+  text-align: left;
+}
+.logo a {
+  float: left;
+  font-size: 1.8rem;
 }

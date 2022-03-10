@@ -1,1 +1,0 @@
-../../alphaTab/Build/JavaScript/jquery.alphaTab.drop.js

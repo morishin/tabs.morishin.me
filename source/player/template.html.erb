@@ -1,412 +1,531 @@
 <% content_for :head do %>
-    <title><%= title %> / <%= author %></title>
-    <!-- Including alphaTab -->
-    <%= javascript_include_tag 'AlphaTab' %>
+<title><%= title %> / <%= author %></title>
+<script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+<script src="https://kit.fontawesome.com/b43f0e512e.js"></script>
+<style type="text/css">
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+  }
 
-    <!-- jQuery Plugin -->
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <%= javascript_include_tag 'jquery.alphaTab' %>
+  .at-wrap {
+    width: 90vw;
+    height: 80vh;
+    margin: 0 auto;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
 
-    <!-- Including alphaSynth -->
-    <%= javascript_include_tag 'lib/swfobject/swfobject' %>
-    <%= javascript_include_tag 'lib/alphaSynth/AlphaSynth.js' %>
+  .at-content {
+    position: relative;
+    overflow: hidden;
+    flex: 1 1 auto;
+  }
 
-    <!-- alphaSynth Plugin -->
-    <%= javascript_include_tag 'jquery.alphaTab.alphaSynth.js' %>
+  /** Sidebar **/
+  .at-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    max-width: 70px;
+    width: auto;
+    display: flex;
+    align-content: stretch;
+    z-index: 1001;
+    overflow: hidden;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    background: #f7f7f7;
+  }
 
-    <!-- Demo Styles and Scripts -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" integrity="sha256-6b+gYy3DG/roKdQiHqp1FJYFQkaZdM6ohUpGyFyUAGk=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js" integrity="sha256-dd5QxcG/E8fb/H/iIQann2y2EDS0nEMVI56yYWFeeW4=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  .at-sidebar:hover {
+    max-width: 400px;
+    transition: max-width 0.2s;
+    overflow-y: auto;
+  }
 
-    <%= stylesheet_link_tag 'demo' %>
-    <style type="text/css">
-    .barCursor { /* Defines the color of the bar background when a bar is played */
-        background: rgba(255, 242, 0, 0.25);
-    }
+  .at-viewport {
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    left: 70px;
+    right: 0;
+    bottom: 0;
+    padding-right: 20px;
+  }
 
-    .selectionWrapper div { /* Defines the color of the selection background */
-        background: rgba(64, 64, 255, 0.1)
-    }
+  .at-footer {
+    flex: 0 0 auto;
+    background: #436d9d;
+    color: #fff;
+  }
 
-    .beatCursor { /* Defines the beat cursor */
-        background: rgba(64, 64, 255, 0.75)
-    }
+  /** Overlay **/
 
-    .atHighlight * { /* Defines the color of the music symbols when they are being played (svg) */
-        fill: #0078ff;
-    }
+  .at-overlay {
+    /** Fill Parent */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1002;
 
+    /* Blurry dark shade */
+    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.5);
 
-    /* Track selector */
-    #trackList li {
-        padding: 5px;
-    }
-    #trackList .btn {
-        background: none;
-        outline: none;
-    }
-    #trackList .solo.checked {
-        background: #426d9d;
-        color: #FFF;
-    }
-    #trackList .mute.checked {
-        background: #c9302c;
-        color: #FFF;
-    }
-    #trackList .title {
-        cursor: pointer;
-    }
-    #trackList .title:hover {
-        color: #426d9d;
-    }
-    #trackList .btn-group {
-    }
+    /** center content */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
 
-    #trackList .slider-handle {
-        -moz-transform: scale(0.5, 0.5);
-        -webkit-transform: scale(0.5, 0.5);
-        transform: scale(0.5, 0.5);
-    }
-    </style>
+  .at-overlay-content {
+    /* white box with drop-shadow */
+    margin-top: 20px;
+    background: #fff;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+  }
+
+  /** Track selector **/
+  .at-track {
+    display: flex;
+    position: relative;
+    padding: 5px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .at-track:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .at-track > .at-track-icon,
+  .at-track > .at-track-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .at-track > .at-track-icon {
+    flex-shrink: 0;
+    font-size: 32px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    width: 64px;
+    height: 64px;
+    margin-right: 5px;
+    align-items: center;
+  }
+
+  .at-track-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .at-track:hover > .at-track-icon {
+    opacity: 0.8;
+  }
+
+  .at-track.active {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .at-track.active > .at-track-icon {
+    color: #4972a1;
+    opacity: 1;
+  }
+
+  .at-track > .at-track-name {
+    font-weight: 500;
+  }
+
+  /** Footer **/
+  .at-controls {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    background: #436d9d;
+    color: #fff;
+  }
+
+  .at-controls > div {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+  }
+
+  .at-controls > div > * {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 4px;
+    margin: 0 3px;
+  }
+
+  .at-controls .btn {
+    color: #fff;
+    border-radius: 0;
+    height: 40px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  .at-controls .btn.disabled {
+    cursor: progress;
+    opacity: 0.5;
+  }
+
+  .at-controls a.active {
+    background: #5588c7;
+    text-decoration: none;
+  }
+
+  .at-controls .btn i {
+    vertical-align: top;
+  }
+
+  .at-controls select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    width: 100%;
+    height: 40px;
+    background: #436d9d;
+    padding: 4px 10px;
+    color: #fff;
+    font-size: 16px;
+    text-align-last: center;
+    text-align: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
+    cursor: pointer;
+  }
+
+  .at-song-title {
+    font-weight: bold;
+  }
+
+  .at-cursor-bar {
+    /* Defines the color of the bar background when a bar is played */
+    background: rgba(255, 242, 0, 0.25);
+  }
+
+  .at-selection div {
+    /* Defines the color of the selection background */
+    background: rgba(64, 64, 255, 0.1);
+  }
+
+  .at-cursor-beat {
+    /* Defines the beat cursor */
+    background: rgba(64, 64, 255, 0.75);
+    width: 3px;
+  }
+
+  .at-highlight * {
+    /* Defines the color of the music symbols when they are being played (svg) */
+    fill: #0078ff;
+    stroke: #0078ff;
+  }
+</style>
+<%= stylesheet_link_tag "site" %>
+<style>
+header {
+  margin: 0 3rem 3rem 0;
+  padding: 1.2rem 0;
+  width: 60rem;
+  max-width: 90vw;
+  @media (max-width: 480px) {
+    width: 90vw;
+  };
+  border-bottom: none;
+}
+.header-wrap {
+  width: 90vw;
+  margin: 0 auto;
+}
+</style>
 <% end %>
 
-<nav class="navbar-default navbar-fixed-top">
-    <div class="navbar">
-        <div class="logo">
-            <a href='/'>Guitar Tabs</a>
-        </div>
-        <div class="navbar-brand">
-            <%= title %> / <%= author %>
-        </div>
-        <div>
-            <button id="playPause" disabled="disabled" class="btn btn-link navbar-btn glyphicon glyphicon-play"></button>
-            <button id="stop" disabled="disabled" class="btn btn-link navbar-btn glyphicon glyphicon-stop"></button>
-            <div class="navbar-item"><a href="#" id="looping" class="btn glyphicon glyphicon-refresh"></a></div>
-            <div class="navbar-item"><a href="#" id="metronome" class="btn glyphicon glyphicon-scale" data-toggle="tooltip" data-placement="bottom" title="Metronome"></a></div>
-            <span class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Speed: <span id="playbackSpeed">100%</span> <span class="caret"></span></a>
-                <ul class="dropdown-menu" id="playbackSpeedSelector">
-                    <li><a href="#" data-value="0.25">25%</a></li>
-                    <li><a href="#" data-value="0.5">50%</a></li>
-                    <li><a href="#" data-value="0.6">60%</a></li>
-                    <li><a href="#" data-value="0.7">70%</a></li>
-                    <li><a href="#" data-value="0.8">80%</a></li>
-                    <li><a href="#" data-value="0.9">90%</a></li>
-                    <li><a href="#" data-value="1">100%</a></li>
-                    <li><a href="#" data-value="1.1">110%</a></li>
-                    <li><a href="#" data-value="1.25">125%</a></li>
-                    <li><a href="#" data-value="1.5">150%</a></li>
-                    <li><a href="#" data-value="2">200%</a></li>
-                </ul>
-                </span>
-            </ul>
-        </div>
-        <nav>
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="btn glyphicon glyphicon-menu-hamburger"></span>
-            </button>
-            <ul id="navbarTogglerDemo01" class="nav navbar-nav navbar-right collapse navbar-collapse">
-                <!-- Loading indicator for soundfont -->
-                <li id="soundFontProgressMenuItem">
-                    <p class="navbar-text">SoundFont</p>
-                    <div class="progress">
-                    <div class="progress-bar" id="soundFontProgress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                        0%
-                    </div>
-                    </div>
-                </li>
-                <!-- Print Button -->
-                <li><a href="#" id="print">Print</a></li>
-                <!-- Track Selector -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="currentTrack">
-                        Tracks
-                    </a>
-                    <ul class="dropdown-menu" id="trackList">
-                    </ul>
-                </li>
-                <!-- Buttons for changing the layout -->
-                <li class="active"><a href="#" id="page" data-layout="page" data-scrollmode="vertical">Page</a></li>
-                <li><a href="#" id="horizontalBarwise" data-layout="horizontal" data-scrollmode="horizontal-bar">Horizontal (Barwise)</a></li>
-                <li><a href="#" id="horizontalOffscreen" data-layout="horizontal" data-scrollmode="horizontal-offscreen">Horizontal (Offscreen)</a></li>
-            </ul>
-      </nav>
+<div class="header-wrap">
+  <header>
+    <div class="logo">
+      <a href='/'>Guitar Tabs</a>
     </div>
-</nav>
+  </header>
+</div>
 
-<!-- Toolbar containing the buttons -->
-<nav class="navbar navbar-default navbar-fixed-top" style="display: none;">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">
-          <%= title %> / <%= author %>
-      </a>
+<div class="at-wrap">
+  <div class="at-overlay">
+    <div class="at-overlay-content">Loading...</div>
+  </div>
+  <div class="at-content">
+    <div class="at-sidebar">
+      <div class="at-sidebar-content">
+        <div class="at-track-list"></div>
+      </div>
     </div>
-    <div id="navbar" class="navbar-collapse">
-      <!-- Player controls -->
-      <ul class="nav navbar-nav">
-        <li><button id="playPause" disabled="disabled" class="btn btn-link navbar-btn glyphicon glyphicon-play"></button></li>
-        <li><button id="stop" disabled="disabled" class="btn btn-link navbar-btn glyphicon glyphicon-stop"></button></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Speed: <span id="playbackSpeed">100%</span> <span class="caret"></span></a>
-          <ul class="dropdown-menu" id="playbackSpeedSelector">
-            <li><a href="#" data-value="0.25">25%</a></li>
-            <li><a href="#" data-value="0.5">50%</a></li>
-            <li><a href="#" data-value="0.6">60%</a></li>
-            <li><a href="#" data-value="0.7">70%</a></li>
-            <li><a href="#" data-value="0.8">80%</a></li>
-            <li><a href="#" data-value="0.9">90%</a></li>
-            <li><a href="#" data-value="1">100%</a></li>
-            <li><a href="#" data-value="1.1">110%</a></li>
-            <li><a href="#" data-value="1.25">125%</a></li>
-            <li><a href="#" data-value="1.5">150%</a></li>
-            <li><a href="#" data-value="2">200%</a></li>
-          </ul>
-        </li>
-        <li><a href="#" id="looping" class="glyphicon glyphicon-refresh"></a></li>
-        <li><a href="#" id="metronome" class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="Metronome"></a></li>
-
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <!-- Loading indicator for soundfont -->
-        <li id="soundFontProgressMenuItem">
-            <p class="navbar-text">SoundFont</p>
-            <div class="progress">
-              <div class="progress-bar" id="soundFontProgress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                0%
-              </div>
-            </div>
-        </li>
-        <!-- Print Button -->
-        <li><a href="#" id="print">Print</a></li>
-        <!-- Track Selector -->
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="currentTrack">
-                Tracks
-            </a>
-            <ul class="dropdown-menu" id="trackList">
-            </ul>
-        </li>
-        <!-- Buttons for changing the layout -->
-        <li class="active"><a href="#" id="page" data-layout="page" data-scrollmode="vertical">Page</a></li>
-        <li><a href="#" id="horizontalBarwise" data-layout="horizontal" data-scrollmode="horizontal-bar">Horizontal (Barwise)</a></li>
-        <li><a href="#" id="horizontalOffscreen" data-layout="horizontal" data-scrollmode="horizontal-offscreen">Horizontal (Offscreen)</a></li>
-      </ul>
+    <div class="at-viewport">
+      <div class="at-main"></div>
     </div>
   </div>
-</nav>
-<!--
-data-player enables the player
-data-player-offset specifies the additional offset to apply when scrolling.
-                    in this sample we scroll 70px up for vertical layouts because the menubar would overlap the tablature otherwise.
-                    the 10px are to have a small horizontal padding.
--->
-<div id="alphaTab" data-file="<%= file_path %>" data-tracks="3"
-                    data-player="/javascripts/lib/alphaSynth/default.sf2"
-                    data-player-offset="[-10,-70]"></div>
+  <div class="at-controls">
+    <div class="at-controls-left">
+      <a class="btn at-player-stop disabled">
+        <i class="fas fa-step-backward"></i>
+      </a>
+      <a class="btn at-player-play-pause disabled">
+        <i class="fas fa-play"></i>
+      </a>
+      <span class="at-player-progress">0%</span>
+      <div class="at-song-info">
+        <span class="at-song-title"></span>&nbsp;/&nbsp;
+        <span class="at-song-artist"></span>
+      </div>
+      <div class="at-song-position">00:00 / 00:00</div>
+    </div>
+    <div class="at-controls-right">
+      <a class="btn toggle at-count-in">
+        <i class="fas fa-hourglass-half"></i>
+      </a>
+      <a class="btn at-metronome">
+        <i class="fas fa-edit"></i>
+      </a>
+      <a class="btn at-loop">
+        <i class="fas fa-retweet"></i>
+      </a>
+      <a class="btn at-print">
+        <i class="fas fa-print"></i>
+      </a>
+      <div class="at-zoom">
+        <i class="fas fa-search"></i>
+        <select>
+          <option value="25">25%</option>
+          <option value="50">50%</option>
+          <option value="75">75%</option>
+          <option value="90">90%</option>
+          <option value="100" selected>100%</option>
+          <option value="110">110%</option>
+          <option value="125">125%</option>
+          <option value="150">150%</option>
+          <option value="200">200%</option>
+        </select>
+      </div>
+      <div class="at-layout">
+        <select>
+          <option value="horizontal">Horizontal</option>
+          <option value="page" selected>Page</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<template id="at-track-template">
+  <div class="at-track">
+    <div class="at-track-icon">
+      <i class="fas fa-guitar"></i>
+    </div>
+    <div class="at-track-details">
+      <div class="at-track-name"></div>
+    </div>
+  </div>
+</template>
 
 <script type="text/javascript">
-    var at = $('#alphaTab');
+  // load elements
+  const wrapper = document.querySelector(".at-wrap");
+  const main = wrapper.querySelector(".at-main");
 
-    //
-    // 1. setup events
-    at.on('alphaTab.soundFontLoad', function(e, progress) {
-        var percentage = ((progress.loaded / progress.total) * 100)|0;
-        $('#soundFontProgress').css('width', percentage + '%').text(percentage + '%');
-    });
-    at.on('alphaTab.soundFontLoaded', function() {
-        $('#soundFontProgressMenuItem').hide();
-    });
-    at.on('alphaTab.playerReady', function() {
-        $('#loadingInfo').hide();
-        $('#playPause').prop('disabled', false).removeAttr('disabled');
-        $('#stop').prop('disabled', false).removeAttr('disabled');
-        $('#looping').prop('disabled', false).removeAttr('disabled');
-        $('#metronome').prop('disabled', false).removeAttr('disabled');
-        updateControls();
-    });
-    at.on('alphaTab.playerStateChanged', function() {
-        updateControls();
-    });
+  // initialize alphatab
+  const settings = {
+    file: "<%= file_path %>",
+    player: {
+      enablePlayer: true,
+      soundFont:
+        "https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2",
+      scrollElement: wrapper.querySelector(".at-viewport"),
+    },
+  };
+  const api = new alphaTab.AlphaTabApi(main, settings);
 
-    //
-    // 2. Load alphaTab
-    at.alphaTab();
+  // overlay logic
+  const overlay = wrapper.querySelector(".at-overlay");
+  api.renderStarted.on(() => {
+    overlay.style.display = "flex";
+  });
+  api.renderFinished.on(() => {
+    overlay.style.display = "none";
+  });
 
-    //
-    // 3. Setup UI controls and use API to control the playback
-
-    $('#print').click(function() {
-        at.alphaTab('print');
+  // track selector
+  function createTrackItem(track) {
+    const trackItem = document
+      .querySelector("#at-track-template")
+      .content.cloneNode(true).firstElementChild;
+    trackItem.querySelector(".at-track-name").innerText = track.name;
+    trackItem.track = track;
+    trackItem.onclick = (e) => {
+      e.stopPropagation();
+      api.renderTracks([track]);
+    };
+    return trackItem;
+  }
+  const trackList = wrapper.querySelector(".at-track-list");
+  api.scoreLoaded.on((score) => {
+    // clear items
+    trackList.innerHTML = "";
+    // generate a track item for all tracks of the score
+    score.tracks.forEach((track) => {
+      trackList.appendChild(createTrackItem(track));
     });
-
-    $('#playPause').click(function() {
-        at.alphaTab('playPause');
+  });
+  api.renderStarted.on(() => {
+    // collect tracks being rendered
+    const tracks = new Map();
+    api.tracks.forEach((t) => {
+      tracks.set(t.index, t);
     });
-
-    $('#stop').click(function() {
-        at.alphaTab('stop');
+    // mark the item as active or not
+    const trackItems = trackList.querySelectorAll(".at-track");
+    trackItems.forEach((trackItem) => {
+      if (tracks.has(trackItem.track.index)) {
+        trackItem.classList.add("active");
+      } else {
+        trackItem.classList.remove("active");
+      }
     });
+  });
 
-    $('#looping').click(function(e) {
-        e.preventDefault();
-        var looping = !at.alphaTab('loop');
-        at.alphaTab('loop', looping);
-        if(looping) {
-            $('#looping').closest('div').addClass('active');
-        }
-        else {
-            $('#looping').closest('div').removeClass('active');
-        }
-    });
+  /** Controls **/
+  api.scoreLoaded.on((score) => {
+    wrapper.querySelector(".at-song-title").innerText = score.title;
+    wrapper.querySelector(".at-song-artist").innerText = score.artist;
+  });
 
-    $('#metronome').click(function(e) {
-        e.preventDefault();
-        var metronomeVolume = at.alphaTab('metronomeVolume');
-        if(metronomeVolume == 0) {
-            at.alphaTab('metronomeVolume', 1);
-            $('#metronome').closest('div').addClass('active');
-        }
-        else {
-            at.alphaTab('metronomeVolume', 0);
-            $('#metronome').closest('div').removeClass('active');
-        }
-    });
+  const countIn = wrapper.querySelector(".at-controls .at-count-in");
+  countIn.onclick = () => {
+    countIn.classList.toggle("active");
+    if (countIn.classList.contains("active")) {
+      api.countInVolume = 1;
+    } else {
+      api.countInVolume = 0;
+    }
+  };
 
-    $('#playbackSpeedSelector a').click(function() {
-        var playbackSpeed = $(this).data('value');
-        at.alphaTab('playbackSpeed', playbackSpeed);
-        $('#playbackSpeed').text($(this).text());
-    });
+  const metronome = wrapper.querySelector(".at-controls .at-metronome");
+  metronome.onclick = () => {
+    metronome.classList.toggle("active");
+    if (metronome.classList.contains("active")) {
+      api.metronomeVolume = 1;
+    } else {
+      api.metronomeVolume = 0;
+    }
+  };
 
-    function updateControls() {
-        var playerState = at.alphaTab('playerState');
-        switch(playerState) {
-            case 0: // stopped/paused
-            $('#playPause').removeClass('glyphicon-pause').addClass('glyphicon-play');
-            break;
-            case 1: // playing
-            $('#playPause').removeClass('glyphicon-play').addClass('glyphicon-pause');
-            break;
-        }
+  const loop = wrapper.querySelector(".at-controls .at-loop");
+  loop.onclick = () => {
+    loop.classList.toggle("active");
+    api.isLooping = loop.classList.contains("active");
+  };
+
+  wrapper.querySelector(".at-controls .at-print").onclick = () => {
+    api.print();
+  };
+
+  const zoom = wrapper.querySelector(".at-controls .at-zoom select");
+  zoom.onchange = () => {
+    const zoomLevel = parseInt(zoom.value) / 100;
+    api.settings.display.scale = zoomLevel;
+    api.updateSettings();
+    api.render();
+  };
+
+  const layout = wrapper.querySelector(".at-controls .at-layout select");
+  layout.onchange = () => {
+    switch (layout.value) {
+      case "horizontal":
+        api.settings.display.layoutMode = alphaTab.LayoutMode.Horizontal;
+        break;
+      case "page":
+        api.settings.display.layoutMode = alphaTab.LayoutMode.Page;
+        break;
+    }
+    api.updateSettings();
+    api.render();
+  };
+
+  // player loading indicator
+  const playerIndicator = wrapper.querySelector(
+    ".at-controls .at-player-progress"
+  );
+  api.soundFontLoad.on((e) => {
+    const percentage = Math.floor((e.loaded / e.total) * 100);
+    playerIndicator.innerText = percentage + "%";
+  });
+  api.playerReady.on(() => {
+    playerIndicator.style.display = "none";
+  });
+
+  // main player controls
+  const playPause = wrapper.querySelector(".at-controls .at-player-play-pause");
+  const stop = wrapper.querySelector(".at-controls .at-player-stop");
+  playPause.onclick = (e) => {
+    if (e.target.classList.contains("disabled")) {
+      return;
+    }
+    api.playPause();
+  };
+  stop.onclick = (e) => {
+    if (e.target.classList.contains("disabled")) {
+      return;
+    }
+    api.stop();
+  };
+  api.playerReady.on(() => {
+    playPause.classList.remove("disabled");
+    stop.classList.remove("disabled");
+  });
+  api.playerStateChanged.on((e) => {
+    const icon = playPause.querySelector("i.fas");
+    if (e.state === alphaTab.synth.PlayerState.Playing) {
+      icon.classList.remove("fa-play");
+      icon.classList.add("fa-pause");
+    } else {
+      icon.classList.remove("fa-pause");
+      icon.classList.add("fa-play");
+    }
+  });
+
+  // song position
+  function formatDuration(milliseconds) {
+    let seconds = milliseconds / 1000;
+    const minutes = (seconds / 60) | 0;
+    seconds = (seconds - minutes * 60) | 0;
+    return (
+      String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0")
+    );
+  }
+
+  const songPosition = wrapper.querySelector(".at-song-position");
+  let previousTime = -1;
+  api.playerPositionChanged.on((e) => {
+    // reduce number of UI updates to second changes.
+    const currentSeconds = (e.currentTime / 1000) | 0;
+    if (currentSeconds == previousTime) {
+      return;
     }
 
-    $('a[data-layout]').click(function(e) {
-        $('a[data-layout]').closest('li').removeClass('active');
-        $(this).closest('li').addClass('active');
-
-        e.preventDefault();
-
-        var layout = $(this).data('layout');
-        var scrollmode = $(this).data('scrollmode');
-
-        at.removeClass('horizontal page');
-        at.addClass(layout);
-
-        // update renderer
-        at.alphaTab('layout', layout);
-
-        // update player
-        at.alphaTab('autoScroll', scrollmode);
-        $('body,html').animate({
-            scrollTop: 0
-        }, 300);
-    });
-
-    //
-    // 4. Track selector
-    var tracks = [];
-    // keep dropdown open
-    $('#trackList').on('click', function(e) {
-        e.stopPropagation();
-    });
-    at.on('alphaTab.loaded', function(e, score) {
-        var trackList = $('#trackList');
-        trackList.empty();
-
-        for( var i = 0; i < score.Tracks.length; i++) {
-            // build list item for track
-            var li = $('<li></li>')
-                .data('track', score.Tracks[i].Index)
-            ;
-
-            // show/hide button and track title
-            var title = $('<div class="title"></div>');
-            li.append(title);
-
-            var showHide = $('<i class="glyphicon glyphicon-eye-close showHide"></i>');
-            title.append(showHide);
-            title.append(score.Tracks[i].Name);
-            title.on('click', function(e) {
-                var track = $(this).closest('li').data('track');
-                tracks = [track];
-                $(this).find('.showHide').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
-
-                // render new tracks
-                at.alphaTab('tracks', tracks);
-            });
-
-            // solo and mute buttons
-            var soloMute = $('<div class="btn-group btn-group-xs"></div>');
-            var solo = $('<button type="button" class="btn btn-default solo">Solo</button>');
-            solo.on('click', function(e) {
-                $(this).toggleClass('checked');
-                var isSolo = $(this).hasClass('checked');
-                var track = $(this).closest('li').data('track');
-                at.alphaTab('soloTrack', track, isSolo);
-            });
-
-            var mute = $('<button type="button" class="btn btn-default mute">Mute</button>');
-            mute.on('click', function(e) {
-                $(this).toggleClass('checked');
-                var isMute = $(this).hasClass('checked');
-                var track = $(this).closest('li').data('track');
-                at.alphaTab('muteTrack', track, isMute);
-            });
-            soloMute.append(solo).append(mute);
-            li.append(soloMute);
-
-            // volume slider
-            var volume = $('<input type="text" />')
-                .on('slide', function(e) {
-                    var track = $(this).closest('li').data('track');
-                    at.alphaTab('trackVolume', track, e.value);
-                });
-            li.append(volume);
-            volume.slider({
-                min: 0,
-                max: 16,
-                step: 1,
-                value: score.Tracks[i].PlaybackInfo.Volume,
-                handle: 'square'
-            })
-
-            trackList.append(li);
-        }
-    });
-    at.on('alphaTab.rendered', function(e) {
-        // load track indices
-        tracks = at.alphaTab('tracks');
-        for(var i = 0; i < tracks.length; i++) {
-            tracks[i] = tracks[i].Index;
-        }
-
-        // check checkboxes
-        $('#trackList li').each(function() {
-            var track = $(this).data('track');
-            var isSelected = tracks.indexOf(track) > -1;
-            if(isSelected) {
-                $(this).find('.showHide').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
-            }
-            else {
-                $(this).find('.showHide').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
-            }
-        });
-    });
-
-
+    songPosition.innerText =
+      formatDuration(e.currentTime) + " / " + formatDuration(e.endTime);
+  });
 </script>
