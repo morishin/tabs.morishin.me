@@ -1,4 +1,13 @@
 <% content_for :head do %>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QRP41B7SP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6QRP41B7SP');
+</script>
 <title><%= title %> / <%= author %> | Guitar Tabs</title>
 <meta name="description" content="耳コピしたのを忘れないように打ち込んだやつ">
 <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
