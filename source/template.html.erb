@@ -1,21 +1,19 @@
 <% content_for :head do %>
   <title>Guitar Tabs</title>
   <meta name="description" content="耳コピしたのを忘れないように打ち込んだやつ">
+  <meta property="og:title" content="Guitar Tabs">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Guitar Tabs">
+  <meta property="og:description" content="耳コピしたのを忘れないように打ち込んだやつ">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@morishin127">
+  <meta name="twitter:title" content="Guitar Tabs">
+  <meta name="twitter:description" content="耳コピしたのを忘れないように打ち込んだやつ">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
   <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
   <%= stylesheet_link_tag "site" %>
 <% end %>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QRP41B7SP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6QRP41B7SP');
-</script>
 
 <header>
   <div class="logo">

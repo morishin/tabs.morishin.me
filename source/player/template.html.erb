@@ -1,15 +1,14 @@
 <% content_for :head do %>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QRP41B7SP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6QRP41B7SP');
-</script>
 <title><%= title %> / <%= author %> | Guitar Tabs</title>
 <meta name="description" content="耳コピしたのを忘れないように打ち込んだやつ">
+<meta property="og:title" content="<%= title %> / <%= author %> | Guitar Tabs">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Guitar Tabs">
+<meta property="og:description" content="耳コピしたのを忘れないように打ち込んだやつ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@morishin127">
+<meta name="twitter:title" content="<%= title %> / <%= author %> | Guitar Tabs">
+<meta name="twitter:description" content="耳コピしたのを忘れないように打ち込んだやつ">
 <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
 <script src="https://kit.fontawesome.com/bce8ae9d9d.js" crossorigin="anonymous"></script>
 <style type="text/css">
