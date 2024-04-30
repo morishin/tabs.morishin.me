@@ -164,9 +164,16 @@
 
   .at-controls > div {
     display: flex;
-    justify-content: flex-start;
     align-content: center;
     align-items: center;
+  }
+
+  .at-controls-left {
+    justify-content: flex-start;
+  }
+
+  .at-controls-right {
+    justify-content: flex-end;
   }
 
   .at-controls > div > * {
@@ -193,8 +200,8 @@
 
   .at-controls .at-metronome svg {
     fill: #fff;
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
   }
 
   .at-controls a.active {
