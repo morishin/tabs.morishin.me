@@ -86,5 +86,8 @@ proxy(
 # https://middlemanapp.com/advanced/configuration/#environment-specific-settings
 
 configure :build do
-  activate :directory_indexes
+  after_build do
+    require_relative './sitemap_generator'
+    write_sitemap
+  end
 end

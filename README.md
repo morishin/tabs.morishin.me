@@ -48,3 +48,14 @@ bundle install
     ```sh
     bundle exec middleman build
     ```
+
+### Sitemap
+サイトマップは自動的にビルド時に生成されます。サイトマップは `source/sitemap.xml` として保存され、ビルド時に `build/sitemap.xml` にコピーされます。
+
+手動でサイトマップを生成する場合は以下のコマンドを実行してください：
+
+```sh
+ruby sitemap_generator.rb
+```
+
+サイトマップには各タブファイル（`*.gp5`）の最終更新日が Git の履歴から取得され、`lastmod` として設定されます。
