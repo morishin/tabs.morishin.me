@@ -39,7 +39,7 @@ def generate_sitemap
     # ファイル名からURLを生成
     title = File.basename(file_path, '.gp5')
     url_title = URI.encode_uri_component(title.downcase)
-    url = "#{BASE_URL}/player/#{url_title}/"
+    url = "#{BASE_URL}/player/#{url_title}"
 
     # ファイルパスからGitの相対パスを取得（submodule内のパス）
     relative_path = file_path.sub('source/tabs/', '')
